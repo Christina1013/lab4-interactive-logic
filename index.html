@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's Your Perfect Day?</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff2f6;
+      color: #553645;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    .container {
+      background: white;
+      padding: 35px;
+      border-radius: 22px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 35px #eecbd8;
+    }
+
+    h1 { color: #c45d85; }
+
+    p { line-height: 1.6; }
+
+    .question {
+      margin: 25px 0;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0;
+      background: #fff2f6;
+      padding: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    label:hover { background: #f9dce7; }
+
+    button {
+      background: #c45d85;
+      color: white;
+      border: none;
+      padding: 14px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover { background: #a9446b; }
+
+    #result {
+      display: none;
+      background: #fff2f6;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    #restart { display: none; margin-top: 15px; }
+
+    .emoji { font-size: 55px; }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <h1>What's Your Perfect Day?</h1>
+    <p>Answer two questions to discover your ideal day!</p>
+
+    <div id="quiz">
+      <div class="question">
+        <h3>1. What's your mood today?</h3>
+        <label><input type="radio" name="mood" value="relax"> I want to relax</label>
+        <label><input type="radio" name="mood" value="social"> I want to go out</label>
+        <label><input type="radio" name="mood" value="explore"> I want to explore</label>
+      </div>
+
+      <div class="question">
+        <h3>2. How much energy do you have?</h3>
+        <label><input type="radio" name="energy" value="low"> Low energy</label>
+        <label><input type="radio" name="energy" value="high"> High energy</label>
+      </div>
+
+      <button onclick="findDay()">Find My Perfect Day</button>
+      <p id="error"></p>
+    </div>
+
+    <div id="result">
+      <div class="emoji" id="emoji"></div>
+      <h2 id="resultTitle"></h2>
+      <p id="description"></p>
+    </div>
+
+    <button id="restart" onclick="restartQuiz()">Try Again</button>
+  </main>
+
+  <script>
+    let currentResult = "";
+
+    function findDay() {
+      let mood = document.querySelector('input[name="mood"]:checked');
+      let energy = document.querySelector('input[name="energy"]:checked');
+
+      if (!mood || !energy) {
+        document.getElementById("error").textContent =
+          "Please answer both questions!";
+        return;
+      }
+
+      let title = "";
+      let description = "";
+      let emoji = "";
+
+      if (mood.value === "explore" && energy.value === "high") {
+        title = "Adventure Day!";
+        description = "Explore somewhere new and make amazing memories!";
+        emoji = "🌴";
+      } else if (mood.value === "social" || energy.value === "high") {
+        title = "Café Day!";
+        description = "Grab your favourite drink and visit a cute café!";
+        emoji = "☕";
+      } else {
+        title = "Cozy Day!";
+        description = "Stay home, watch a movie, and enjoy some relaxation!";
+        emoji = "🎀";
+      }
+
+      currentResult = title;
+
+      document.getElementById("resultTitle").textContent = title;
+      document.getElementById("description").textContent = description;
+      document.getElementById("emoji").textContent = emoji;
+
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("result").style.display = "block";
+      document.getElementById("restart").style.display = "inline-block";
+    }
+
+    function restartQuiz() {
+      currentResult = "";
+      document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.checked = false;
+      });
+
+      document.getElementById("error").textContent = "";
+      document.getElementById("quiz").style.display = "block";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
